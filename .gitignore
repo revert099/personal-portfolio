@@ -1,5 +1,12 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+# local IDE/editor
+.vscode/
+.idea/
+
+# local cache
+.turbo/
+
 # dependencies
 /node_modules
 /.pnp

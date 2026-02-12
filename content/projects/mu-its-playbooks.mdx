@@ -1,0 +1,133 @@
+---
+title: "Incident Response Playbooks for Murdoch University ITS"
+date: "2024-11-08"
+type: "cyber"
+summary: "Designed and delivered a set of standardised incident response playbooks for Murdoch University ITS, aligned to industry frameworks and tailored to existing operational workflows."
+featured: true
+
+visibility: "public-summary"
+client: "Murdoch University (ITS)"
+role: ["Playbook design", "Process standardisation", "Documentation", "Stakeholder collaboration"]
+timeframe: "University group project"
+stack: ["NIST IR lifecycle", "ISO/IEC 27001", "ACSC Essential Eight", "Delinea 5-phase model"]
+tags: ["incident-response", "playbooks", "process", "governance", "security-operations"]
+
+links:
+  github: ""  # intentionally empty (confidential)
+  demo: ""
+  writeup: ""
+---
+
+import Callout from "@/components/mdx/Callout";
+import Kpi from "@/components/mdx/Kpi";
+import PhaseGrid from "@/components/mdx/PhaseGrid";
+
+## Context
+Incident response often succeeds or fails on **speed, consistency, and clarity**. In real environments, teams can lose time to uncertainty: *Who owns what? What evidence do we capture? What’s the containment threshold? What’s the escalation path?*
+
+Murdoch University ITS wanted a more standardised and repeatable approach to handling incidents — one that reduces ambiguity and supports responders under pressure.
+
+## What I delivered
+I contributed to the design and delivery of a set of **standardised incident response playbooks** for Murdoch University’s Information Technology Services (ITS). The playbooks were built to be:
+- **Actionable** (checklist-driven, decision-focused)
+- **Consistent** (same structure and terminology across incidents)
+- **Aligned** to recognised security standards and good practice
+- **Tailored** to an ITS operational environment (clear roles, escalation and handover points)
+
+<Callout title="Confidentiality note">
+This page describes the approach and structure at a high level. Specific incident scenarios, internal systems, and operational details have been intentionally omitted.
+</Callout>
+
+## Design principles
+### 1) Standard structure, low cognitive load
+Each playbook follows the same predictable layout so responders can navigate quickly:
+- what this incident looks like (signals and triggers)
+- scope and impact considerations
+- immediate actions and decision points
+- evidence capture and containment
+- eradication and recovery validation
+- communications and escalation checkpoints
+- lessons learned prompts and follow-up actions
+
+### 2) Clear roles and responsibilities
+A playbook is only as strong as the clarity of ownership. Each response phase includes explicit role expectations to reduce “who does what” confusion during high-stress events.
+
+### 3) Practical alignment to industry frameworks
+The playbooks draw on established approaches so the outputs are defensible and familiar to security professionals:
+- **NIST** incident response lifecycle concepts
+- **ISO/IEC 27001** governance and control thinking (policy + repeatability)
+- **ACSC Essential Eight** as a practical uplift lens
+- **Delinea’s 5-phase model** to anchor the operational workflow:
+
+<PhaseGrid
+  title="Delinea 5-Phase Response"
+  items={[
+    { title: "Discovery", tone: "discovery" },
+    { title: "Containment", tone: "containment" },
+    { title: "Eradication", tone: "eradication" },
+    { title: "Recovery", tone: "recovery" },
+    { title: "Lessons Learned", tone: "lessons" },
+  ]}
+/>
+
+## The response workflow
+### Discovery
+Focus: confirm incident, triage severity, preserve evidence early.
+- initial triage questions
+- scope estimation (affected systems/users/data)
+- evidence capture guidance (what to collect before changes)
+- escalation triggers and “stop/continue” decision points
+
+### Containment
+Focus: stop spread and reduce harm while preserving forensic value.
+- containment options by scenario class (without locking into vendor/tool specifics)
+- “short-term vs long-term containment” decision making
+- risk tradeoffs (availability vs integrity vs confidentiality)
+
+### Eradication
+Focus: remove root cause and persistence.
+- validate the initial cause hypothesis
+- remove malicious artefacts or misconfigurations
+- reset credentials/keys where required
+- confirm “known-good” state criteria
+
+### Recovery
+Focus: safe restoration and monitoring.
+- restore services in controlled stages
+- integrity checks and validation
+- increased monitoring/alerting
+- sign-off criteria before returning to BAU
+
+### Lessons Learned
+Focus: prevent recurrence and improve response maturity.
+- what went well / what slowed response
+- control gaps and recommended uplift
+- documentation updates and runbook improvements
+- follow-up actions with owners and due dates
+
+## What this enables in practice
+<Kpi
+  items={[
+    { label: "Consistency", value: "Same structure across incidents" },
+    { label: "Speed under pressure", value: "Checklist-driven steps + decision points" },
+    { label: "Operational clarity", value: "Explicit roles + escalation checkpoints" },
+  ]}
+/>
+
+- **Faster triage and containment** because responders don’t have to invent a process mid-incident.
+- **Reduced risk of missed steps** (evidence preservation and comms often fail here).
+- **Clearer escalation and handover** between technical responders and stakeholders.
+- **Better post-incident uplift**, because lessons learned feeds directly into controls and documentation improvement.
+
+## What I learned
+This project reinforced that “good security” is not just technical controls — it’s also **operational design**:
+- clarity beats complexity during incidents
+- standardisation creates speed
+- documentation needs to be written for the moment of pressure, not for perfect conditions
+
+## Next steps (if extended)
+If this work were to be expanded beyond the initial delivery, the most useful next layer would be:
+- a lightweight severity matrix used consistently across ITS
+- a small set of comms templates (internal + stakeholder)
+- an evidence capture checklist per platform category (identity, endpoint, network, cloud)
+- simple metrics (time-to-triage, time-to-containment, repeat incident types) to track maturity improvements
