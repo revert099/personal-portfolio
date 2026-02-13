@@ -9,7 +9,7 @@ export function typeLabel(type: string): string {
   switch (type) {
     case "cyber":
       return "Cybersecurity";
-    case "ai":
+    case "AI":
       return "AI";
     case "automation":
       return "Automation";
@@ -21,7 +21,7 @@ export function typeLabel(type: string): string {
       return "Photography";
     default:
       return "Software";
-    case "lit-review":
+    case "Literature Review":
       return "Literature Review";
   }
 }
