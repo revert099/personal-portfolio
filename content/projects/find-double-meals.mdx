@@ -1,0 +1,144 @@
+---
+title: "Find Double Meals Automation"
+date: "2026-02-__"
+type: "automation"
+summary: "Detects duplicate meal modifiers (e.g., repeated upsizes), recalculates ingredient lists, and publishes corrected buying outputs - notifying the team of file generation via Slack."
+stack: ["Python", "Excel (COM)", "Google Drive API", "Slack Webhooks", "Task Scheduler", "PowerShell"]
+featured: true
+confidential: true
+links:
+  github: ""
+  demo: ""
+---
+
+<Kpi
+  items={[
+    { label: "Ordering confidently", value: "Buying correct ingredients" },
+    { label: "Operational impact", value: "Minimise food waste" },
+    { label: "Notifications", value: "Slack status + alerts" },
+  ]}
+/>
+
+<Callout title="Confidentiality note">
+This is a sanitised case study. Client identifiers, folder IDs, webhook URLs, and credential target names are intentionally omitted.
+</Callout>
+
+## Overview
+This automation solves a practical operations problem: when customers select the same meal option (with meal modifiers) more than once, the upstream export encodes that duplication by repeating modifiers inside the meal code (e.g., an “upsize” modifier repeated multiple times). Downstream ingredient calculations can miss those duplicates, resulting in under-ordering.
+
+The script detects these duplicate patterns, recalculates required ingredients using produce + meat ingredient maps, and publishes corrected buying outputs for the buying and production team — with file freshness checks and Slack notifications.
+
+
+## The problem
+Meal options are encoded as compact codes (e.g. `A2`, `B2`, `C2`) and may include modifiers (e.g. `UP - Upsize`, `GF - Gluten Free`, `GR - Grass Fed`).
+
+When a customer selects the same meal-with-modifier multiple times, the export can represent this by **repeating the modifier**, producing codes like:
+
+- `A2UPUP` (interpreted as multiple upsizes of the same option)
+- `B2GFGF` (multiple gluten-free modifiers)
+- `C2GRGR` (multiple grass-fed modifiers)
+- `A4GFGFUPUPGRGR` (mixed modifiers with duplication)
+
+The issue: With the existing logic, the ingredient list is generated based on the base meal option and a single instance of each modifier. Repeated modifiers are not correctly accounted for, leading to under-counting of ingredients (e.g., not ordering enough “UP” add-ons for multiple upsizes).
+
+
+## What I built
+### 1) Input ingestion (4 files)
+The script consumes:
+- **Picksheet (ingredient totals)** — the baseline ingredient list for each delivery day
+- **Routing export** — the source of meal option codes per customer/order
+- **Produce ingredient map** — static mapping for produce items per meal option
+- **Meat ingredient map** — static mapping for meat items per meal option
+
+<Callout title="Why four inputs?">
+The routing file explains what customers actually ordered. The picksheet shows the baseline totals. The produce/meat ingredient files allow a deterministic recalculation of what additional ingredients are required when duplicates are detected.
+</Callout>
+
+### 2) Duplicate detection + normalisation (regex-based)
+Duplicate modifier cases are detected directly from the **routing export**, where the same option/modifier combination can appear more than once (e.g. repeated upsizes).
+
+The script treats repeated modifiers as a signal that the export has “compressed” multiple selections into a single code (e.g. a repeated suffix like `UPUP`). To correct this, it uses **regex-based normalisation** to reduce each meal option back to a **canonical form** that contains only a single modifier per base option.
+
+Conceptually:
+- Base option: `A2`
+- Modifier: `UP`
+- Encoded duplicate: `A2UPUP` → canonical: `A2UP`
+
+From there, the script:
+1. Builds a list of orders that were normalised (i.e., orders affected by duplicates)
+2. Extracts the canonical meal option attributes required for ingredient mapping (e.g., option group + modifier + meal count tier such as 2/4/6)
+3. Uses those attributes to look up required ingredients from the ingredient mapping tables
+4. Adds the resulting ingredient quantities into the master picksheet totals so the buying/production team orders the correct amounts
+
+### 3) Ingredient delta calculation (produce + meat)
+Once duplicates are identified, the script:
+- calculates the **additional ingredients** implied by the extra modifier occurrences
+- adds those deltas to the overall ingredient list
+- outputs a corrected “what to order” view for the buying/production team
+
+This directly reduces under-ordering and helps avoid last-minute substitutions or waste.
+
+### 4) Logistics signal: “no meat box” detection
+The script also flags meal options that have **no meat ingredients** (based on the meat ingredient map).  
+That signal is passed to the Logistics department so they can plan for "no meat box" identification during dispatch.
+
+
+## Operational workflow
+<PhaseGrid
+  title="End-to-end workflow"
+  items={[
+    { title: "Refresh inputs", tone: "discovery", description: "Routing & picksheet refreshed via workbook automation." },
+    { title: "Validate freshness", tone: "containment", description: "Detect stale/missing ingredient maps and notify stakeholders." },
+    { title: "Process & calculate", tone: "eradication", description: "Detect duplicates, compute ingredient deltas, flag logistics conditions." },
+    { title: "Publish outputs", tone: "recovery", description: "Upload corrected outputs to shared drive for department leads." },
+    { title: "Notify team", tone: "lessons", description: "Slack alerts for stale inputs and successful publication." },
+  ]}
+/>
+
+### Input refresh automation
+- The routing and picksheet inputs are refreshed via a workbook-driven automation step (Excel refresh pipeline via VBA).
+- Date-overrides are determined dynamically based on the current date and the production schedule.
+
+### Ingredient map handling + freshness checks
+The produce and meat ingredient maps are uploaded by department leads into a shared drive location.
+
+To prevent running against out-of-date (stale) maps:
+- A scheduled job checks the last modified timestamps of those files before processing.
+- Slack alerts report whether inputs are **stale**, **missing**, or **fresh**
+
+<PhaseGrid
+  title="End-to-end workflow"
+  items={[
+    { title: "STALE", tone: "discovery", description: "Ingredient files are likely still from the previous week." },
+    { title: "FRESH", tone: "recovery", description: "Ingredient files are up-to-date, corresponding to the coming production week." },
+    { title: "MISSING", tone: "eradication", description: "Ingredient files are not in the shared drive at all." },
+  ]}
+/>
+
+### Scheduled generation and publishing
+On the appropriate production days, the script generates:
+- corrected ingredient totals
+- a duplicate-meal/ingredient report
+- logistics flags (including “no meat box” cases)
+
+Outputs are published to the shared drive for team use ahead of the workday, and Slack posts confirm success with a link to the output location (sanitised here).
+
+
+## Reliability & security considerations
+- **Secrets kept out of code:** tokens/credentials are stored in the OS credential vault and loaded at runtime.
+- **No sensitive logging:** alerts and logs are sanitised to avoid exposing identifiers.
+- **Failure-mode aware:** missing/stale file conditions are detected early and reported clearly.
+- **Operational transparency:** Slack notifications provide quick, actionable status updates for the team.
+
+
+## Results
+- More accurate ingredient ordering
+- Reduced operational risk from under-counted modifiers
+- Fewer manual checks and fewer last-minute corrections
+- Better alignment between buying/production/logistics teams
+
+
+## Next steps
+- Add automated regression tests for normalisation edge cases (modifier repetition patterns)
+- Add a “dry-run” mode for safe troubleshooting without publishing
+- Add a small summary dashboard (duplicate rates over time) to spot upstream export issues early

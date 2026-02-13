@@ -57,7 +57,7 @@ export default function PhaseGrid({
       {/* Centre the grid and limit width so it stays readable on ultra-wide screens. */}
       <div className="mx-auto max-w-4xl">
         {/* Responsive grid: 1 → 2 → 5 columns depending on viewport. */}
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+        <div className="flex justify-center gap-3 overflow-x-auto pb-2 [-webkit-overflow-scrolling:touch]">
           {items.map((item) => (
             <div
               // Title used as key; ensure titles are unique within the grid.
