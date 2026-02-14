@@ -1,33 +1,95 @@
 @import "tailwindcss";
 
 /* Design tokens */
-:root {
-  /* Base */
+/* Default theme = slate */
+:root,
+:root[data-theme="slate"] {
   --background: #eef2f6;
   --foreground: #0b1220;
 
-  /* Supporting tokens */
-  --card: #f8fafc;                
-  --border: #d6dde8;              
-  --muted: #415062;               
-  --accent: #0f766e;              
-  --accent-foreground: #ffffff;   
+  --card: #f8fafc;
+  --border: #d6dde8;
+  --muted: #415062;
 
-  /* Radius (optional) */
+  --accent: #0f766e;
+  --accent-foreground: #ffffff;
+
+  --media-filter: none;
+
   --radius: 24px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* Dark */
+:root[data-theme="dark"] {
+  --background: #0a0a0a;
+  --foreground: #ededed;
 
-    --muted: #9ca3af;
-    --border: #1f2937;
-    --card: #0f0f12;
-    --accent: #ededed;
-    --accent-foreground: #0a0a0a;
-  }
+  --muted: #9ca3af;
+  --border: #1f2937;
+  --card: #0f0f12;
+
+  --accent: #ededed;
+  --accent-foreground: #0a0a0a;
+
+  --media-filter: invert(1);
+}
+
+:root[data-theme="cyber"] {
+  --background: #050807;          /* near-black, slight green tint */
+  --foreground: #dcffe8;          /* readable “terminal” text */
+  --card: #07110d;                /* dark card */
+  --border: #0f2e22;              /* deep green border */
+  --muted: #7de7b0;               /* muted green text */
+  --accent: #00ff84;              /* neon accent */
+  --accent-foreground: #00170d;   /* dark text on neon */
+
+  /* Make monochrome media neon green */
+  --media-filter: brightness(0) saturate(100%) invert(71%) sepia(98%)
+    saturate(400%) hue-rotate(92deg) brightness(110%) contrast(120%);
+}
+
+/* Sand (example) */
+:root[data-theme="sand"] {
+  --background: #fbf6ea;
+  --foreground: #1a140c;
+
+  --card: #fffaf0;
+  --border: #e7dcc9;
+  --muted: #6b5b44;
+
+  --accent: #b45309;
+  --accent-foreground: #fff7ed;
+
+  --media-filter: none;
+
+}
+
+/* Ocean (example) */
+:root[data-theme="ocean"] {
+  --background: #06121a;
+  --foreground: #e6f6ff;
+
+  --card: #0a1c28;
+  --border: #163446;
+  --muted: #9cc5db;
+
+  --accent: #38bdf8;
+  --accent-foreground: #041018;
+
+  --media-filter: invert(1);
+}
+
+/* Force “always green” (HTB) — this overrides theme-media */
+.keep-green {
+  filter: none !important;
+}
+
+/**
+ * Theme-aware inversion for raster icons / images (PNG, JPG, etc.)
+ * Apply className="theme-invert" to any <Image/> you want to flip.
+ */
+.theme-media {
+  filter: var(--media-filter);
 }
 
 /* Map tokens into Tailwind theme variables */
@@ -51,6 +113,8 @@
 html,
 body {
   height: 100%;
+  width: 100%;
+  overflow-x: hidden;
 }
 
 body {
@@ -75,14 +139,9 @@ body {
   animation: dock-jiggle 260ms ease-in-out;
 }
 
-
-.animate-reveal {
-  animation: reveal 500ms ease-out forwards;
-}
-
 @layer components {
   .container-page {
-    @apply mx-auto max-w-6xl px-6;
+    @apply mx-auto w-full max-w-6xl px-6 lg:max-w-7xl 2xl:max-w-[88rem];
   }
 
   /* One consistent section style for everything */
@@ -198,10 +257,6 @@ body {
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 80px; /* accounts for sticky navbar height */
-  body {
-    width: 100%;
-    overflow-x: hidden;
-  }
+  scroll-padding-top: 80px;
 }
 

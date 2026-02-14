@@ -27,7 +27,7 @@ export default function BlogPage(): JSX.Element {
       <div className="container-page">
         <ExplorerClient
           heading="Blog"
-          description="Write-ups, case studies, and lessons learned."
+          description="Write-ups, reflections and personal insights."
           items={items}
           variant="blog"
         />

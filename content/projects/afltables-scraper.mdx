@@ -11,7 +11,7 @@ links:
   demo: ""
 ---
 
-import { KPI } from "@/components/KPI";
+import { Kpi } from "@/components/Kpi";
 import { Callout } from "@/components/Callout";
 import { Figure } from "@/components/Figure";
 import { PhaseGrid } from "@/components/PhaseGrid";
@@ -25,20 +25,25 @@ This project is a **data-engineering pipeline** that turns raw HTML from AFL Tab
 
 The goal is to build a solid data foundation for **modelling, forecasting and exploratory analysis** of AFL performance.
 
-<PhaseGrid>
-  <PhaseGrid.Item title="Stack" body="Python, requests, BeautifulSoup, pandas, dataclasses" />
-  <PhaseGrid.Item title="Domain" body="AFL match & player statistics from AFL Tables" />
-  <PhaseGrid.Item title="Outputs" body="Matches CSV + Player-games CSV" />
-  <PhaseGrid.Item title="Focus" body="Robust parsing, caching & schema design" />
-</PhaseGrid>
+<PhaseGrid
+  title="AFL Tables scraper"
+  items={[
+    { title: "Stack", tone: "discovery", description: "Python, requests, BeautifulSoup, pandas, dataclasses" },
+    { title: "Domain", tone: "containment", description: "AFL match & player statistics from AFL Tables" },
+    { title: "Outputs", tone: "recovery", description: "Matches CSV + Player-games CSV" },
+    { title: "Focus", tone: "lessons", description: "Robust parsing, caching & schema design" },
+  ]}
+/>
 
 ## Key Outcomes
 
-<div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-6">
-  <KPI label="Match rows" value="1 per game" />
-  <KPI label="Player-game rows" value="1 per player per game" />
-  <KPI label="Seasons" value="Configurable (e.g. 2025 → all years later)" />
-</div>
+<Kpi
+  items={[
+    { label: "Match rows", value: "1 per game" },
+    { label: "Player-game rows", value: "1 per player per game" },
+    { label: "Seasons", value: "Configurable (e.g. 2025 → all years later)" },
+  ]}
+/>
 
 The scraper:
 
@@ -72,7 +77,7 @@ If you want to do anything serious with AFL data, you immediately hit a few issu
 
 **Matches table (examples):**
 
-- `match_id` – stable key: <code>{season}_{date}_{home_team}_{away_team}</code>  
+- `match_id` – stable key: <code>{"{season}_{date}_{home_team}_{away_team}"}</code>
 - `season`, `round`, `date`  
 - `home_team`, `away_team`  
 - Quarter-by-quarter scores (`home_q1`–`home_q4`, `away_q1`–`away_q4`)  

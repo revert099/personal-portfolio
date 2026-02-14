@@ -52,7 +52,7 @@ export default function Contact(): JSX.Element {
       email: String(fd.get("email") ?? ""),
       subject: String(fd.get("subject") ?? ""),
       message: String(fd.get("message") ?? ""),
-      // Honeypot: bots may fill this, humans won't see it
+      // Some secret stuff :-)
       company: String(fd.get("company") ?? ""),
     };
 
@@ -108,22 +108,27 @@ export default function Contact(): JSX.Element {
                     "focus:outline-none focus-visible:ring-2 focus-visible:ring-border focus-visible:ring-offset-2 focus-visible:ring-offset-background",
                   ].join(" ")}
                 >
-                  <Image src={s.iconSrc} alt="" width={28} height={28} draggable={false} />
+                  <Image
+                    src={s.iconSrc}
+                    alt=""
+                    width={28}
+                    height={28}
+                    draggable={false}
+                    className={s.label === "HackTheBox" ? "keep-green" : "theme-media"}
+                  />
                   <span className="pointer-events-none absolute inset-0 rounded-2xl ring-1 ring-white/20" />
                 </a>
               ))}
             </div>
-
-            <p className="mt-4 text-sm text-muted">Tip: keep these to the platforms you actually use.</p>
           </div>
 
           <div className="lg:w-[58%]">
             <div className="card p-6">
               <h3 className="text-xl font-semibold">Send me a message</h3>
 
-              {/* NOTE: We use onSubmit so we can POST JSON (matches route.ts). */}
+              {/* Using onSubmit so we can POST JSON (matches route.ts). */}
               <form className="mt-6 grid gap-4" onSubmit={onSubmit}>
-                {/* Honeypot field (hidden). Bots may fill it; humans won't. */}
+                {/* Special secret field :-) */}
                 <input
                   type="text"
                   name="company"
@@ -192,10 +197,6 @@ export default function Contact(): JSX.Element {
                 </div>
               </form>
             </div>
-
-            <p className="mt-3 text-xs text-muted">
-              Form submission is handled by <code>/api/contact</code> (Resend).
-            </p>
           </div>
         </div>
       </div>

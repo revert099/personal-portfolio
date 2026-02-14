@@ -10,22 +10,22 @@ export default function Hero(): JSX.Element {
           <div className="space-y-6 text-center md:text-left">
             <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">
               <Reveal delayMs={220} durationMs={1000}>Hi,</Reveal>{" "}
-              <Reveal delayMs={620} durationMs={1000}>I&apos;m Jacob.</Reveal>
+              <Reveal delayMs={620} durationMs={3000}>I&apos;m Jacob.</Reveal>
             </h1>
 
-            <Reveal delayMs={920} durationMs={1000}>
+            <Reveal delayMs={920} durationMs={2000}>
               <p className="text-lg text-muted">
-                Cybersecurity, automation, web development, and more.
+                Cybersecurity, automation, IoT development, and more.
               </p>
             </Reveal>
 
-            <Reveal delayMs={1420} durationMs={1000}>
+            <Reveal delayMs={1420} durationMs={2000}>
               <p className="text-muted">
-                I like to build things to make my life easier and to learn new skills.
+                I like to build secure, practical solutions - things that make life easier, solve a problem or reduce operational risk.
               </p>
             </Reveal>
 
-            <Reveal delayMs={2020} durationMs={1000}>
+            <Reveal delayMs={2020} durationMs={2000}>
               <div className="flex flex-wrap justify-center gap-3 md:justify-start">
                 <a href="/#projects" className="btn-primary">View projects</a>
                 <a href="/#contact" className="btn-secondary">Contact</a>
@@ -34,7 +34,7 @@ export default function Hero(): JSX.Element {
           </div>
 
           {/* Right (desktop) / Bottom (mobile): line art */}
-          <Reveal delayMs={720} durationMs={1000}>
+          <Reveal delayMs={720} durationMs={2000}>
             <div className="relative mt-6 md:mt-0 md:translate-x-6 md:translate-y-25 md:scale-130 md:origin-bottom-right">
               <Image
                 src="/line-art-hero.png"
@@ -44,8 +44,8 @@ export default function Hero(): JSX.Element {
                 priority
                 className={[
                   "h-auto w-full opacity-90",
-                  // Make it feel right-anchored on desktop
                   "md:origin-right md:scale-110",
+                  "theme-media",
                 ].join(" ")}
               />
             </div>

@@ -50,7 +50,7 @@ export default function Reveal({
       className={[
         // Smooth transition for both opacity + transform.
         // NOTE: duration is ultimately controlled by `durationMs` below.
-        "inline-block transition-all duration-2000 ease-out",
+        "inline-block transition-all ease-out",
         // Hidden -> Visible state classes.
         shown ? "opacity-100 translate-y-0" : "opacity-0 translate-y-1",
         className,
