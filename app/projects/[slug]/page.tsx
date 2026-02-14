@@ -9,31 +9,23 @@ import Callout from "@/components/mdx/Callout";
 import Kpi from "@/components/mdx/Kpi";
 import PhaseGrid from "@/components/mdx/PhaseGrid";
 
-/**
- * Custom components available inside MDX.
- * Example usage in MDX: <Figure ... />, <Callout>...</Callout>, etc.
- */
 const mdxComponents = { Figure, Callout, Kpi, PhaseGrid };
 
 type Params = { slug: string };
 type PageProps = {
-  // In your runtime, params is coming through as a Promise.
-  params: Promise<Params>;
+  params: Params | Promise<Params>;
   searchParams?: Record<string, string | string[] | undefined>;
 };
 
-/**
- * ProjectDetailPage (/projects/[slug])
- * Server page that loads and renders the MDX body for a single project.
- */
-export default async function ProjectDetailPage(props: PageProps): Promise<JSX.Element> {
-  // ✅ IMPORTANT: await the params Promise
+export default async function ProjectDetailPage(props: PageProps) {
+  // ✅ Works whether params is a Promise OR a plain object
   const { slug } = await props.params;
 
-  // Safety guard (prevents "undefined" from ever reaching your loader)
   if (!slug) notFound();
 
   const project = getProjectBySlug(slug);
+  if (!project) notFound();
+
   const { frontmatter, content } = project;
 
   return (

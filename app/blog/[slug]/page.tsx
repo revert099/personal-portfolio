@@ -12,17 +12,17 @@ import PhaseGrid from "@/components/mdx/PhaseGrid";
 const mdxComponents = { Figure, Callout, Kpi, PhaseGrid };
 
 type Params = { slug: string };
-type PageProps = { params: Promise<Params> };
+type PageProps = { params: Params | Promise<Params> };
 
-/**
- * BlogPostPage (/blog/[slug])
- * Renders a single blog post from MDX.
- */
-export default async function BlogPostPage(props: PageProps): Promise<JSX.Element> {
+export default async function BlogPostPage(props: PageProps) {
+  // ✅ Works whether params is a Promise OR a plain object
   const { slug } = await props.params;
+
   if (!slug) notFound();
 
   const post = getBlogPostBySlug(slug);
+  if (!post) notFound();
+
   const { frontmatter, content } = post;
 
   return (
