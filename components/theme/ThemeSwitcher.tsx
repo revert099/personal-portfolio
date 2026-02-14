@@ -89,22 +89,47 @@ export default function ThemeSwitcher() {
 
   return (
     <div className="relative" ref={panelRef}>
-      {/* Trigger button: always says "Themes" */}
+      {/* Trigger */}
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
-        className="inline-flex h-10 items-center gap-2 rounded-xl border border-border bg-card px-3 text-sm text-foreground shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
         aria-haspopup="menu"
         aria-expanded={open}
+        className={[
+          // Base
+          "inline-flex items-center justify-center border border-border bg-card shadow-sm",
+          "transition hover:-translate-y-0.5 hover:shadow-md",
+          "focus:outline-none focus-visible:ring-2 focus-visible:ring-border focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+
+          // ✅ Mobile: tiny square icon button
+          "h-8 w-8 rounded-lg sm:hidden",
+        ].join(" ")}
+        title="Themes"
       >
-        Themes
-        <span className="text-muted">▾</span>
+        {/* simple palette-ish icon (no extra libs needed) */}
+        <span aria-hidden="true" className="text-sm leading-none">{">"}</span>
+        <span className="sr-only">Themes</span>
+      </button>
+
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        aria-haspopup="menu"
+        aria-expanded={open}
+        className={[
+          // Desktop/tablet: original full button
+          "hidden sm:inline-flex h-10 items-center gap-2 rounded-xl border border-border bg-card px-3",
+          "text-sm text-foreground shadow-sm transition hover:-translate-y-0.5 hover:shadow-md",
+          "focus:outline-none focus-visible:ring-2 focus-visible:ring-border focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+        ].join(" ")}
+      >
+        Themes <span className="text-muted">▾</span>
       </button>
 
       {open ? (
         <div
           role="menu"
-          className="absolute left-0 mt-3 w-[260px] max-w-[85vw] rounded-2xl border border-border bg-card p-3 shadow-lg"
+          className="absolute left-0 mt-3 w-[220px] sm:w-[260px] max-w-[85vw] rounded-2xl border border-border bg-card p-3 shadow-lg"
         >
           <div className="px-2 pb-2 text-xs font-medium text-muted">
             Choose a colour set

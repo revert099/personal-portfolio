@@ -28,19 +28,20 @@ export default function Navbar() {
     <header className="fixed inset-x-0 top-0 z-[9999] border-b border-border bg-background/95 backdrop-blur">
       <nav className="container-page">
         <div className="relative flex h-16 items-center">
-          {/* Left slot */}
-          <div className="flex items-center gap-3">
+          {/* Left slot: reserve space so centred links never overlap */}
+          <div className="w-[88px] sm:w-[180px] flex items-center">
             <ThemeSwitcher />
           </div>
 
-          {/* Centre links (true centre) */}
+          {/* centred block (works at all breakpoints now) */}
           <div className="absolute left-1/2 -translate-x-1/2">
-            <div className="flex items-center gap-8">
+            {/* no wrap prevents two-line nav on small screens */}
+            <div className="flex items-center gap-4 sm:gap-8 whitespace-nowrap">
               {links.map((l) => (
                 <Link
                   key={l.href}
                   href={l.href}
-                  className="text-sm font-medium text-foreground underline underline-offset-4 decoration-border transition-colors hover:text-blue-600 hover:decoration-blue-600"
+                  className="text-xs sm:text-sm font-medium text-foreground underline underline-offset-4 decoration-border transition-colors hover:text-blue-600 hover:decoration-blue-600"
                 >
                   {l.label}
                 </Link>
@@ -48,10 +49,8 @@ export default function Navbar() {
             </div>
           </div>
 
-          {/* Right slot */}
-          <div className="ml-auto">
-            {/* optional logo/wordmark later */}
-          </div>
+          {/* Right slot reserved for later */}
+          <div className="ml-auto w-[0px] sm:w-[180px]" />
         </div>
       </nav>
     </header>
