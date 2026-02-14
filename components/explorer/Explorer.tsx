@@ -32,7 +32,7 @@ export default function Explorer({
   typeLabel,
   renderResults,
   defaultSort = "newest",
-}: Props): JSX.Element {
+}: Props) {
   const [query, setQuery] = useState("");
   const [type, setType] = useState<string>("all");
   const [sort, setSort] = useState<SortMode>(defaultSort);

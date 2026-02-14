@@ -11,7 +11,7 @@ type Item = { label: string; value: string };
  * - 3 columns from sm+
  * Each item has a vertical accent bar for quick visual scanning.
  */
-export default function Kpi({ items }: { items: Item[] }): JSX.Element {
+export default function Kpi({ items }: { items: Item[] }) {
   return (
     // Responsive KPI grid (good for 3–6 quick highlights).
     <div className="mt-8 grid gap-6 sm:grid-cols-3">

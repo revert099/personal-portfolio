@@ -15,7 +15,7 @@ type Props = {
  * A reusable MDX-friendly “info box” used to highlight key notes, context, or warnings.
  * Uses your global design tokens (border/card/text) so it matches the rest of the site.
  */
-export default function Callout({ title, children }: Props): JSX.Element {
+export default function Callout({ title, children }: Props) {
   return (
     // Outer card container with consistent spacing + styling.
     <div className="mt-8 rounded-3xl border border-border bg-card p-6 shadow-sm">

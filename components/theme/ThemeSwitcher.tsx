@@ -39,7 +39,7 @@ const STORAGE_KEY = "site-theme";
  * - Label uses leading-none to avoid baseline/line-height pushing the row
  * - Switch container uses flex + items-center (avoids grid baseline quirks)
  */
-export default function ThemeSwitcher(): JSX.Element {
+export default function ThemeSwitcher() {
   const [theme, setTheme] = useState<ThemeKey>("slate");
   const [open, setOpen] = useState(false);
   const panelRef = useRef<HTMLDivElement | null>(null);

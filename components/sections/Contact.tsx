@@ -25,7 +25,7 @@ const socials: SocialLink[] = [
 
 type Status = "idle" | "sending" | "success" | "error";
 
-export default function Contact(): JSX.Element {
+export default function Contact() {
   /**
    * Status + error are used for tiny UX feedback (sent / failed).
    * Keeps things lightweight and avoids extra libraries.

@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Reveal from "@/components/Reveal";
 
-export default function Hero(): JSX.Element {
+export default function Hero() {
   return (
     <section className="section section-hero">
       <div className="container-page">

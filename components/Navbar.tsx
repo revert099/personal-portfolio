@@ -23,7 +23,7 @@ const links = [
  * We use a 3-column grid so the centre column stays centred even though
  * something exists on the left.
  */
-export default function Navbar(): JSX.Element {
+export default function Navbar() {
   return (
     <header className="fixed inset-x-0 top-0 z-[9999] border-b border-border bg-background/95 backdrop-blur">
       <nav className="container-page">

@@ -35,7 +35,7 @@ export default function ExplorerClient({
   description?: string;
   items: ExplorerItem[];
   variant: Variant;
-}): JSX.Element {
+}) {
   return (
     <Explorer
       heading={heading}

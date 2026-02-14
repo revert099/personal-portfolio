@@ -6,7 +6,7 @@ import ExplorerClient from "@/components/explorer/ExplorerClient";
  * ProjectsPage (/projects)
  * Server component loads MDX frontmatter and passes plain data to the client.
  */
-export default function ProjectsPage(): JSX.Element {
+export default function ProjectsPage() {
   const projects = getAllProjects();
 
   const items: ExplorerItem[] = projects.map((p) => ({
@@ -17,7 +17,7 @@ export default function ProjectsPage(): JSX.Element {
     date: p.frontmatter.date,
     type: p.frontmatter.type,
     tags: p.frontmatter.stack ?? [],
-    confidential: !!p.frontmatter.confidential,
+    confidential: !!p.frontmatter,
   }));
 
   return (

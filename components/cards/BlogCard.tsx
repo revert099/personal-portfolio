@@ -15,7 +15,7 @@ export default function BlogsCard({
   item,
 }: {
   item: ExplorerItem;
-}): JSX.Element {
+}) {
   // Defensive guard: makes it obvious if the parent forgot to pass `item`
   if (!item?.href) {
     throw new Error("BlogsCard: missing required `item` (href/title).");

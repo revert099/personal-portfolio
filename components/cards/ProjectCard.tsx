@@ -12,7 +12,7 @@ export default function ProjectCard({
   item,
 }: {
   item?: ExplorerItem; // <- allow optional so we can throw a nicer error
-}): JSX.Element {
+}) {
   if (!item) {
     throw new Error("ProjectCard: missing `item` prop. Did you render <ProjectCard /> without item?");
   }

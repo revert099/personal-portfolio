@@ -8,7 +8,7 @@ import type { ExplorerItem } from "@/lib/explorer/types";
  * Listing page that loads MDX frontmatter on the server
  * and renders the interactive Explorer on the client.
  */
-export default function BlogPage(): JSX.Element {
+export default function BlogPage() {
   const posts = getAllBlogPosts();
 
   const items: ExplorerItem[] = posts.map((p) => ({

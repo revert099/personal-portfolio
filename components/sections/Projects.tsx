@@ -10,7 +10,7 @@ import type { ExplorerItem } from "@/lib/explorer/types";
  * - Server component (can read MDX via getAllProjects)
  * - Renders top 6 project cards
  */
-export default function Projects(): JSX.Element {
+export default function Projects() {
   const projects = getAllProjects();
 
   // Map to the same ExplorerItem shape your card expects
@@ -22,7 +22,7 @@ export default function Projects(): JSX.Element {
     date: p.frontmatter.date,
     type: p.frontmatter.type,
     tags: p.frontmatter.stack ?? [],
-    confidential: !!p.frontmatter.confidential,
+    confidential: !!p.frontmatter,
   }));
 
   const top = items.slice(0, 6);

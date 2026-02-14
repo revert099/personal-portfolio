@@ -32,7 +32,7 @@ export default function CardShell({
    * (e.g., hover effects, special borders, etc.)
    */
   className?: string;
-}): JSX.Element {
+}) {
   return (
     /**
      * h-full ensures this card can stretch to the height of the grid cell.

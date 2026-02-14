@@ -16,7 +16,7 @@ export default function CardGrid({
   children,
 }: {
   children: ReactNode;
-}): JSX.Element {
+}) {
   return (
     <div
       className={[

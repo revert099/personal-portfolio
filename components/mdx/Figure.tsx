@@ -28,7 +28,7 @@ export default function Figure({
   caption,
   width = 1400,
   height = 800,
-}: Props): JSX.Element {
+}: Props) {
   return (
     // Semantic figure wrapper so captions are correctly associated with the image.
     <figure className="mt-8">

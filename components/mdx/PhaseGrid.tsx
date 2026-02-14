@@ -45,7 +45,7 @@ export default function PhaseGrid({
 }: {
   title?: string;
   items: PhaseGridItem[];
-}): JSX.Element {
+}) {
   return (
     // Adds vertical spacing so the component breathes within MDX pages.
     <section className="my-10">
