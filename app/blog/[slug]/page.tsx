@@ -1,7 +1,7 @@
 // app/blog/[slug]/page.tsx
 import Link from "next/link";
-import { MDXRemote } from "next-mdx-remote/rsc";
 import { notFound } from "next/navigation";
+import { compileMDX } from "next-mdx-remote/rsc";
 import { getBlogPostBySlug } from "@/lib/blog";
 
 import Figure from "@/components/mdx/Figure";
@@ -15,15 +15,33 @@ type Params = { slug: string };
 type PageProps = { params: Params | Promise<Params> };
 
 export default async function BlogPostPage(props: PageProps) {
-  // ✅ Works whether params is a Promise OR a plain object
   const { slug } = await props.params;
-
   if (!slug) notFound();
 
   const post = getBlogPostBySlug(slug);
   if (!post) notFound();
 
-  const { frontmatter, content } = post;
+  const { frontmatter, content: mdxSource } = post;
+
+  const compiled = await compileMDX({
+    source: mdxSource,
+    components: mdxComponents,
+    options: {
+      parseFrontmatter: false,
+
+      // IMPORTANT for next-mdx-remote v6:
+      // allow MDX JS expressions like items={[...]}
+      blockJS: false,
+
+      // keep protections on (default true, but set explicitly)
+      blockDangerousJS: true,
+
+      // good idea to be explicit
+      mdxOptions: {
+        format: "mdx",
+      },
+    },
+  });
 
   return (
     <main className="section">
@@ -38,9 +56,7 @@ export default async function BlogPostPage(props: PageProps) {
 
         <p className="mt-3 text-muted">{frontmatter.summary}</p>
 
-        <article className="mdx mt-10 break-words">
-          <MDXRemote source={content} components={mdxComponents} />
-        </article>
+        <article className="mdx mt-10 break-words">{compiled.content}</article>
       </div>
     </main>
   );
