@@ -15,13 +15,14 @@ export default function Hero() {
 
             <Reveal delayMs={920} durationMs={2000}>
               <p className="text-lg text-muted">
-                Cybersecurity, automation, IoT development, and more.
+                Cybersecurity, automation, and more.
               </p>
             </Reveal>
 
             <Reveal delayMs={1420} durationMs={2000}>
               <p className="text-muted">
-                I like to build secure, practical solutions - things that make life easier, solve a problem or reduce operational risk.
+                I'm an early career cybersecurity graduate - curious, disciplined, and building hands-on experience across the domain.
+                I like getting to root cause, strengthening controls, and creating tools that reduce friction and operational risk.
               </p>
             </Reveal>
 

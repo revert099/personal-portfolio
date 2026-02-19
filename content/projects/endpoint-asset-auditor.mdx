@@ -1,0 +1,107 @@
+---
+title: "Asset Auditor (Offline Cross-Platform Cybersecurity Health Check)"
+date: "2026-02-19"
+type: "cyber"
+summary: "A USB-runnable endpoint auditing tool for macOS, Linux, and Windows that outputs client-ready JSON reports."
+featured: true
+visibility: "public-summary"
+role: ["Design", "Python development", "Cross-platform auditing", "Reporting"]
+stack: ["Python", "psutil", "subprocess", "macOS scutil/route", "Linux iproute2/resolvectl", "Windows PowerShell/netsh"]
+tags: ["endpoint-audit", "asset-inventory", "hardening", "offline-tooling", "security-assessment"]
+links:
+  github: "https://github.com/revert099/asset-auditor"
+  demo: ""
+  writeup: ""
+---
+
+## Overview
+I’m building an **Endpoint Asset Auditor** — a cross-platform auditing tool designed for cybersecurity consulting work. The program will run offline (i.e. no internet access required) from a USB drive, and generate a client-ready report that captures:
+
+- system + hardware inventory  
+- network posture snapshots (routes, DNS, proxies, exposure)
+- evidence for each check (raw command outputs where relevant)
+- an easy to read resilience score from 1-100 *(in progress)*
+
+## Project Structure
+The repository is split into portable **shared collectors** and platform **OS-specific collectors**.
+
+### `shared/` (cross-platform)
+- `hardware.py` — CPU, memory, disk, battery (where available)
+- `network.py` — interface inventory + (best-effort) listening ports
+- `system.py` — baseline system identity (in progress)
+- `security.py` — shared security signals (in progress)
+
+### `collectors/` (platform-specific)
+- `mac/mac_network.py` — macOS route/DNS/proxy using native tooling (`route`, `scutil`)
+- `linux/linux_network.py` — Linux route/DNS/proxy using best-effort fallbacks (`ip`, `resolvectl`, `/etc/resolv.conf`)
+- `mac.py`, `linux.py`, `windows.py` — platform entry points / orchestration (in progress)
+
+### Core + reporting
+- `core/models.py` — dataclasses / result schema (evolving)
+- `core/report.py` — report assembly + JSON writing (in progress)
+- `reports/formatter.py` — output formatting utilities (in progress)
+- `helpers/unix.py` — shared command helpers (e.g. `run_cmd`) for Unix-like platforms
+
+### Outputs
+- `results/audit_report.json` — example output generated during development
+
+## What I’ve Built So Far
+### 1) Shared inventory (via `psutil`)
+Details found at **https://psutil.readthedocs.io/en/latest/**
+- CPU core counts + frequencies + utilisation
+- memory (virtual + swap)
+- disk partitions + disk usage per mount
+- interface inventory (IPv4/IPv6/MAC + link stats)
+- listening ports snapshot
+
+### 2) macOS network posture
+Implemented macOS-specific functions that capture evidence and return consistent JSON:
+- default route / gateway (`route -n get default`)
+- DNS resolver configuration (`scutil --dns`)
+- proxy configuration (`scutil --proxy`)
+
+### 3) Linux network posture
+Linux equivalents with fallbacks for distro variance:
+- default route (`ip route show default`, fallback to `route -n` / `netstat -rn`)
+- DNS (`resolvectl status`, fallback to `/etc/resolv.conf`)
+- proxy (environment variables + optional `/etc/environment`)
+
+### 4) Windows network posture
+Using PowerShell + netsh. Windows equivalents:
+- default route (`Get-NetRoute` + interface mapping; fallback to `route print`)
+- DNS (`Get-DnsClientServerAddress`; fallback to `ipconfig /all`)
+- proxy (`netsh winhttp show proxy` + HKCU Internet Settings)
+
+## Why These Checks Matter
+I prioritised controls that are easily explainable to clients and non-technical users:
+
+- **Default gateway + interface** → validates expected egress path (LAN vs VPN/tunnel)
+- **DNS resolvers** → detects rogue/unexpected DNS configuration
+- **Proxy config** → highlights interception points or compliance gaps
+- **Listening ports** → quick exposure snapshot (best-effort; permissions vary)
+
+Every platform-specific function captures **evidence** (command + rc + stdout/stderr) so audit results can be justified.
+
+## What’s Next
+### MVP completion
+- Standardise all collector outputs into a single result schema (`core/models.py`)
+- Finish the report builder (`core/report.py`) so scoring + findings are consistent
+- Add CSV output for client-friendly summaries
+
+### Security expansion (after network)
+- macOS: FileVault, Gatekeeper, SIP, firewall rules posture (as policy allows)
+- Windows: Defender status, Firewall profiles, BitLocker
+- Linux: firewall posture, SSH hardening indicators, encryption indicators
+
+### Packaging
+- “Run from USB” workflow:
+  - bootstrap venv OR package to an executable (PyInstaller)
+  - predictable output directory (`results/`)
+  - minimal dependencies and safe failure modes
+
+## Example Output
+Right now, outputs are generated as JSON into `results/audit_report.json`.  
+As the schema stabilises, I’ll add:
+- a short “executive summary” section
+- a scoring breakdown by category (hardware / network / security)
+- clear remediation hints per finding

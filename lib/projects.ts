@@ -5,7 +5,7 @@ export type ProjectType = "coding" | "cyber" | "ai" | "automation";
 export type ProjectFrontmatter = {
   title: string;
   date: string; // YYYY-MM-DD
-  type: ProjectType;
+  type: ProjectType | ProjectType[];
   summary: string;
   stack?: string[];
   featured?: boolean;
