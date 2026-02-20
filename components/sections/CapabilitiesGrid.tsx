@@ -8,7 +8,7 @@ type StackCard = {
 const CARDS: StackCard[] = [
   {
     title: "Automation & data pipelines",
-    outcome: "Build repeatable pipelines that reduce manual error, improve data integrity eliminate manual labour.",
+    outcome: "Build repeatable pipelines that reduce manual error, improve data integrity and eliminate manual labour.",
     tools: ["Python", "pandas", "openpyxl", "CSV/Excel", "Google Drive API", "Slack Webhooks"],
   },
   {
@@ -38,33 +38,37 @@ export default function CapabilitiesGrid() {
     <section className="section">
       <div className="container-page">
         <div className="max-w-2xl">
-          <h2 className="text-2xl font-semibold tracking-tight">What I build</h2>
+          <h2 className="text-2xl font-semibold tracking-tight">Where I create impact</h2>
           <p className="mt-2 text-muted">
-            A practical mix of cybersecurity, automation, and web delivery — focused on outcomes.
+            Practical strengths across security and IT - focused on outcomes.
           </p>
         </div>
         
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {CARDS.map((c) => (
-            <div
-              key={c.title}
-              className="rounded-2xl border border-border bg-card p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
-            >
-              <div className="text-base font-semibold">{c.title}</div>
-              <div className="mt-2 text-sm text-muted">{c.outcome}</div>
+        {/* Cards */}
+        <div className="mt-8 mx-auto max-w-[calc(3*20rem+2*1.5rem)]">
+            <div className="flex flex-wrap justify-center gap-6">
+                {CARDS.map((c) => (
+                <div
+                    key={c.title}
+                    className="w-full sm:w-[20rem] flex h-full flex-col rounded-2xl border border-border bg-card p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+                >
+                    <div className="text-base font-semibold">{c.title}</div>
+                    <div className="mt-2 text-sm text-muted">{c.outcome}</div>
 
-              <div className="mt-4 flex flex-wrap gap-2">
-                {c.tools.map((t) => (
-                  <span
-                    key={t}
-                    className="rounded-full border border-border bg-background/60 px-2.5 py-1 text-xs text-foreground"
-                  >
-                    {t}
-                  </span>
+                    {/* tags pinned to bottom so card heights feel consistent */}
+                    <div className="mt-auto pt-4 flex flex-wrap gap-2">
+                    {c.tools.map((t) => (
+                        <span
+                        key={t}
+                        className="rounded-full border border-border bg-background/60 px-2.5 py-1 text-xs text-foreground"
+                        >
+                        {t}
+                        </span>
+                    ))}
+                    </div>
+                </div>
                 ))}
-              </div>
             </div>
-          ))}
         </div>
       </div>
     </section>

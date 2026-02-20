@@ -1,5 +1,8 @@
+"use client";
+
 import Link from "next/link";
 import ThemeSwitcher from "@/components/theme/ThemeSwitcher";
+import { usePathname } from "next/navigation";
 
 /**
  * Primary navigation links.
@@ -24,6 +27,9 @@ const links = [
  * something exists on the left.
  */
 export default function Navbar() {
+
+  const pathname = usePathname();
+
   return (
     <header className="fixed inset-x-0 top-0 z-[9999] border-b border-border bg-background/95 backdrop-blur">
       <nav className="container-page">
@@ -37,15 +43,32 @@ export default function Navbar() {
           <div className="absolute left-1/2 -translate-x-1/2">
             {/* no wrap prevents two-line nav on small screens */}
             <div className="flex items-center gap-4 sm:gap-8 whitespace-nowrap">
-              {links.map((l) => (
-                <Link
-                  key={l.href}
-                  href={l.href}
-                  className="text-xs sm:text-sm font-medium text-foreground underline underline-offset-4 decoration-border transition-colors hover:text-blue-600 hover:decoration-blue-600"
-                >
-                  {l.label}
-                </Link>
-              ))}
+              {links.map((l) => {
+                const isHome = l.href === "/#hero";
+
+                return (
+                  <Link
+                    key={l.href}
+                    href={l.href}
+                    onClick={(e) => {
+                      if (isHome && pathname === "/") {
+                        e.preventDefault();
+
+                        // update the URL hash without a full navigation
+                        window.history.pushState(null, "", "/#hero");
+
+                        // then scroll
+                        document
+                          .getElementById("hero")
+                          ?.scrollIntoView({ behavior: "smooth", block: "start" });
+                      }
+                    }}
+                    className="text-xs sm:text-sm font-medium text-foreground underline underline-offset-4 decoration-border transition-colors hover:text-blue-600 hover:decoration-blue-600"
+                  >
+                    {l.label}
+                  </Link>
+                );
+              })}
             </div>
           </div>
 
