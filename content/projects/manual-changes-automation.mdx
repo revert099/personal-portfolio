@@ -1,0 +1,290 @@
+import { Badge } from "@/components/ui/badge"
+import { Card, CardContent } from "@/components/ui/card"
+import { Separator } from "@/components/ui/separator"
+
+export const metadata = {
+  title: "Manual Changes Automation System",
+}
+
+# Manual Changes Automation System
+
+## End-to-End Logistics Automation with Python, Google Sheets, and Route4Me
+
+<Separator className="my-8" />
+
+<Card className="my-8">
+  <CardContent className="pt-6 space-y-4">
+    <p>
+      This project is a <strong>production-grade automation system</strong> built to eliminate manual intervention in logistics operations.
+      Customer service teams submit structured <strong>manual changes</strong> through a Google Sheet, and the system validates,
+      processes, and executes those changes automatically through the Route4Me API.
+    </p>
+    <p>
+      The core challenge was not simply automating route changes. It was designing a system that allowed <strong>non-technical staff</strong>
+      to safely perform complex operational updates without introducing ambiguity, inconsistency, or risk.
+    </p>
+    <blockquote>
+      <p>
+        <strong>Core problem solved:</strong> How do you let operational staff make nuanced logistics updates while ensuring the system remains
+        deterministic, auditable, and safe?
+      </p>
+    </blockquote>
+  </CardContent>
+</Card>
+
+## Key Objectives
+
+- Replace manual route editing with structured automation
+- Remove ambiguity from operational requests through strict input control
+- Enforce safe execution with fail-fast and fail-safe behaviour
+- Provide full visibility via Slack notifications and audit logging
+- Create a scalable operational workflow without increasing overhead
+
+## System Architecture
+
+The platform is built as four tightly integrated layers.
+
+### 1. Input Layer — Google Sheets Manual Changes Interface
+
+<Badge>Google Sheets</Badge>
+
+Customer service teams interact with a structured Google Sheet where:
+
+- each row represents a single operational action
+- data is entered through predefined columns and dropdowns
+- a <strong>Ready for Submission</strong> flag triggers processing
+
+The interface was designed to reduce nuance as much as possible. The sheet enforces:
+
+- standardised date formats
+- controlled values for change type and related business fields
+- separation between driver-facing notes and internal system comments
+
+Google Apps Script was used to improve usability and data quality by:
+
+- stamping submission timestamps automatically
+- tagging rows with operational AM or PM context
+- preventing invalid submissions such as missing change types
+
+### 2. Processing Layer — Python Automation Engine
+
+<Badge>Python</Badge>
+
+A modular Python automation engine polls the sheet every five minutes and processes new rows.
+
+Its responsibilities include:
+
+- reading and parsing submitted rows
+- validating required inputs
+- routing logic based on change type
+- calling the Route4Me API
+- generating structured outcomes for downstream logging and notifications
+
+The engine was intentionally designed around a few key principles:
+
+- <strong>deterministic behaviour</strong> — no guessing and no implicit assumptions
+- <strong>config-driven logic</strong> — mappings and rules stored centrally
+- <strong>fail-safe execution</strong> — invalid requests return <code>NEEDS_REVIEW</code>
+- <strong>single-responsibility handlers</strong> — each change type has isolated logic
+
+### 3. Execution Layer — Route4Me API Integration
+
+<Badge>Route4Me API</Badge>
+
+The system integrates directly with Route4Me to perform real operational changes, including:
+
+- creating new orders
+- updating existing stops
+- moving destinations between routes
+- inserting stops at correct sequence positions
+
+The execution layer includes several smart behaviours:
+
+- route lookup using email and date
+- fallback order creation if a matching destination is not found
+- sequence placement using standard sequencing or <code>do_at_drop</code> logic when sticker lock is active
+- conditional marketplace handling for DMP, CMP, Wine, and fruit logic
+
+### 4. Output Layer — Slack Notifications and Audit Logging
+
+<Badge>Slack</Badge> <Badge>Audit Trail</Badge>
+
+Every action produces two outputs.
+
+#### Slack Notification Layer
+
+Slack notifications provide real-time operational visibility through concise, human-readable summaries.
+
+Each message includes:
+
+- change type
+- route name and link
+- sequence position where relevant
+- key field changes as before and after diffs
+
+Possible result states are:
+
+- ✅ Success
+- ⚠️ Needs Review
+- ❌ Failed
+
+#### Audit Logging Layer
+
+A dedicated audit log in Google Sheets stores:
+
+- original request data
+- processing results
+- route IDs and sequence positions
+- submission, processing, and notification timestamps
+
+This gives the business a persistent operational record and significantly improves traceability.
+
+## Lifecycle of a Change
+
+```text
+1. Customer service fills in a row in the Manual Changes sheet
+2. Ready for Submission is ticked
+3. Apps Script stamps metadata such as timestamps and AM/PM context
+4. Python detects the new row
+5. Validation logic runs
+6. The correct handler is selected based on change type
+7. Route4Me is updated
+8. Results are written back to the sheet
+9. A Slack notification is sent
+10. The action is recorded in the audit log
+```
+
+## Core Features
+
+### Change Type System
+
+The platform supports a wide range of operational actions, including:
+
+- add, remove, and update orders
+- add and remove meals
+- change delivery day
+- add and remove marketplace items
+- add redelivery and box collection
+- fallback manual review through <code>OTHER</code>
+
+Each change type:
+
+- has its own dedicated handler
+- uses strict field allowlists
+- applies only the intended modifications
+
+### Marketplace Logic
+
+Marketplace handling required more nuanced business rules than standard orders.
+
+This includes:
+
+- CMP, DMP, and Wine combinations
+- fruit handling for SFR and LFR
+- safe consolidation rules when DMP already exists
+- fallback use of the FRT field when appropriate
+- removal logic that preserves unrelated order data
+
+### Baseline Update Layer
+
+A shared update layer applies across all change types so that common fields can be updated safely.
+
+This layer handles:
+
+- first name and last name updates when provided
+- phone number updates and normalisation to +61 format
+- mapping delivery notes into Route4Me comments
+- prevention of blank-value overwrites
+
+### Validation and Guardrails
+
+The system is intentionally defensive.
+
+Examples include:
+
+- invalid or missing data routes to <code>NEEDS_REVIEW</code>
+- missing routes or cross-tenant lookup issues are blocked
+- invalid date relationships are prevented
+- strict field filtering stops unintended updates
+
+### Slack Presentation Layer
+
+Slack output was designed as its own presentation layer rather than a raw dump of technical metadata.
+
+Messages are:
+
+- concise and operationally useful
+- free from technical noise such as IDs or coordinates
+- structured around human-readable change summaries
+
+This includes:
+
+- cleaned route names
+- clickable Route4Me links
+- before and after field diffs
+- structured result details blocks
+
+## Testing and Validation
+
+The system was validated using both controlled and real-world style testing.
+
+Testing included:
+
+- two weeks of dummy operational runs
+- scenario testing across success, failure, and edge cases
+- unit tests for parsing, audit enrichment, and packday mapping
+- live verification against Route4Me API behaviour
+
+This was important because the project touched real operational workflows, where silent errors or ambiguous updates would have had downstream consequences.
+
+## Outcomes
+
+<Card className="my-8">
+  <CardContent className="pt-6 grid gap-8 md:grid-cols-2">
+    <div>
+      <h3>Before</h3>
+      <ul>
+        <li>manual route edits</li>
+        <li>high risk of human error</li>
+        <li>inconsistent execution</li>
+        <li>limited visibility and weak auditability</li>
+      </ul>
+    </div>
+    <div>
+      <h3>After</h3>
+      <ul>
+        <li>structured, repeatable workflows</li>
+        <li>safe automation with guardrails</li>
+        <li>real-time operational visibility through Slack</li>
+        <li>full audit trail for all processed changes</li>
+      </ul>
+    </div>
+  </CardContent>
+</Card>
+
+## Impact
+
+The project delivered practical operational impact:
+
+- reduced manual overhead significantly
+- increased confidence when making route or order changes
+- enabled non-technical staff to perform complex actions safely
+- created a scalable foundation for future logistics automation
+
+## Future Improvements
+
+Potential next steps include:
+
+- moving from polling to event-driven execution
+- introducing role-based permissions for deeper control
+- expanding validation coverage further
+- improving reporting and dashboards
+- deeper integrations with upstream order systems
+
+## Key Takeaway
+
+<blockquote>
+  <p>
+    This project demonstrates how structured inputs, strict validation, and modular automation can transform a high-risk manual process into a reliable, scalable operational system.
+  </p>
+</blockquote>
