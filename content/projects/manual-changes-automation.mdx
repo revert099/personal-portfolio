@@ -1,4 +1,4 @@
----
+
 title: "Manual Changes Automation System"
 date: "2026-03-21"
 type: "automation"
@@ -9,7 +9,7 @@ confidential: true
 links:
   github: ""
   demo: ""
----
+
 
 <Kpi
   items={[
@@ -18,10 +18,6 @@ links:
     { label: "Visibility", value: "Slack + full audit logging" },
   ]}
 />
-
-<Callout title="Confidentiality note">
-This is a sanitised case study. API keys, route identifiers, customer data, and internal business logic mappings have been removed or generalised.
-</Callout>
 
 ## Overview
 This project delivers an end-to-end automation system that replaces manual logistics changes with a structured, controlled workflow.
@@ -32,7 +28,6 @@ The system addresses a core operational challenge:
 
 How do you allow non-technical staff to perform complex logistics updates without introducing risk, inconsistency, or ambiguity?
 
----
 
 ## The problem
 Previously, logistics changes were handled manually inside Route4Me. This introduced several issues:
@@ -45,7 +40,7 @@ Previously, logistics changes were handled manually inside Route4Me. This introd
 
 Additionally, requests from customer service often contained ambiguity, requiring interpretation rather than execution.
 
----
+
 
 ## What I built
 
@@ -68,7 +63,7 @@ Google Apps Script enhances usability by:
 - Tagging entries with AM/PM operational context
 - Preventing invalid submissions (e.g. missing change type)
 
----
+
 
 ### 2) Processing layer — Python automation engine
 A modular Python system runs on a schedule and processes new rows.
@@ -88,7 +83,7 @@ Design approach:
 - Fail-safe behaviour (`NEEDS_REVIEW` for invalid cases)
 - Single-responsibility handlers per change type
 
----
+
 
 ### 3) Execution layer — Route4Me integration
 The system integrates directly with Route4Me to:
@@ -105,7 +100,7 @@ Key behaviours include:
 - Sequence placement using standard logic or `do_at_drop`
 - Marketplace-specific handling (CMP, DMP, Wine, fruit logic)
 
----
+
 
 ### 4) Output layer — Slack + audit logging
 Every action produces two outputs:
@@ -128,7 +123,7 @@ A persistent record stored in Google Sheets, including:
 - Route IDs and sequence
 - Timestamps for full traceability
 
----
+
 
 ## Operational workflow
 
@@ -143,7 +138,7 @@ A persistent record stored in Google Sheets, including:
   ]}
 />
 
----
+
 
 ## Core features
 
@@ -163,7 +158,7 @@ Each change type:
 - Uses strict field allowlists
 - Applies only intended updates
 
----
+
 
 ### Marketplace logic
 Handles nuanced business rules including:
@@ -173,7 +168,7 @@ Handles nuanced business rules including:
 - Conditional consolidation into DMP
 - Safe removal logic without affecting unrelated data
 
----
+
 
 ### Baseline update layer
 A shared layer ensures consistent updates across all actions:
@@ -183,7 +178,7 @@ A shared layer ensures consistent updates across all actions:
 - Delivery notes mapped to driver-facing comments
 - Blank values never overwrite existing data
 
----
+
 
 ### Validation and guardrails
 The system is intentionally defensive:
@@ -193,7 +188,7 @@ The system is intentionally defensive:
 - Date mismatches are prevented
 - Strict field filtering avoids unintended changes
 
----
+
 
 ### Slack presentation layer
 Slack output is designed for clarity, not technical detail:
@@ -203,7 +198,7 @@ Slack output is designed for clarity, not technical detail:
 - Before/after change summaries
 - Structured result blocks
 
----
+
 
 ## Testing & validation
 The system was validated through:
@@ -213,7 +208,7 @@ The system was validated through:
 - Unit testing for parsing and mapping logic
 - Live verification against Route4Me API
 
----
+
 
 ## Results
 
@@ -223,7 +218,7 @@ The system was validated through:
 - Introduced full audit visibility
 - Improved confidence across customer service and logistics teams
 
----
+
 
 ## Impact
 
@@ -232,7 +227,7 @@ The system was validated through:
 - Improved coordination between departments
 - Created a scalable foundation for further automation
 
----
+
 
 ## Next steps
 
@@ -242,7 +237,7 @@ The system was validated through:
 - Build reporting dashboards for operational insights
 - Integrate upstream systems (order ingestion)
 
----
+
 
 ## Key takeaway
 
