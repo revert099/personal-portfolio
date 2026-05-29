@@ -100,7 +100,7 @@ export function getBySlug<Frontmatter>(
  * Read all items for a collection (without content by default),
  * sorted newest-first if `dateKey` exists on frontmatter.
  */
-export function getAll<Frontmatter extends Record<string, unknown>>(
+export function getAll<Frontmatter extends object>(
   collection: string,
   validate: (fm: Partial<Frontmatter>, slug: string) => asserts fm is Frontmatter,
   dateKey: keyof Frontmatter = "date" as keyof Frontmatter

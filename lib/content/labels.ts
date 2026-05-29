@@ -6,22 +6,22 @@ export type ContentType = "cyber" | "ai" | "automation" | "software" | "photo" |
  */
 
 export function typeLabel(type: string): string {
-  switch (type) {
+  switch (type.trim().toLowerCase()) {
     case "cyber":
       return "Cybersecurity";
-    case "AI":
+    case "ai":
       return "AI";
     case "automation":
       return "Automation";
     case "blog":
       return "Blog";
-    case "Case Study":
+    case "case study":
       return "Case Study";
     case "photo":
       return "Photography";
+    case "literature review":
+      return "Literature Review";
     default:
       return "Software";
-    case "Literature Review":
-      return "Literature Review";
   }
 }

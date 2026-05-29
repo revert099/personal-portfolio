@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
+import PageWrapper from "@/components/PageWrapper";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -14,9 +15,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Jacob Winsor | Portfolio",
+  title: "Jacob Winsor | Automation Systems — Perth, WA",
   description:
-    "Cybersecurity graduate building practical security, automation, and IoT projects. Case studies, write-ups, and contact.",
+    "Jacob Winsor — automation systems that eliminate manual data work for growing businesses. Based in Perth, WA.",
   icons: {
     icon: "icon.png",        // browser tab icon
     apple: "icon.png",       // iOS home screen icon
@@ -32,10 +33,9 @@ export default function RootLayout({
     <html lang="en">
         <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground`}>
           <Navbar />
-          <div className="pt-16">{children}</div>
+          <PageWrapper>{children}</PageWrapper>
         </body>
     </html>
   );
 }
-
 

@@ -1,6 +1,6 @@
 import type { ExplorerItem } from "@/lib/explorer/types";
-import { getAllProjects } from "@/lib/projects";
-import ExplorerClient from "@/components/explorer/ExplorerClient";
+import ProjectsPageClient from "@/components/explorer/ProjectsPageClient";
+import { getAllProjects, getProjectListingSummary } from "@/lib/projects";
 
 /**
  * ProjectsPage (/projects)
@@ -13,22 +13,18 @@ export default function ProjectsPage() {
     id: p.slug,
     href: `/projects/${p.slug}`,
     title: p.frontmatter.title,
-    summary: p.frontmatter.summary,
+    summary: getProjectListingSummary(p.frontmatter),
     date: p.frontmatter.date,
     type: p.frontmatter.type,
-    tags: p.frontmatter.stack ?? [],
-    confidential: !!p.frontmatter,
+    tags: p.frontmatter.tags ?? p.frontmatter.stack ?? [],
+    category: p.frontmatter.category,
+    confidential: !!p.frontmatter.confidential,
   }));
 
   return (
     <main className="section">
       <div className="container-page">
-        <ExplorerClient
-          heading="Projects"
-          description="Case studies across cybersecurity, automation, AI, and software builds."
-          items={items}
-          variant="projects"
-        />
+        <ProjectsPageClient items={items} />
       </div>
     </main>
   );

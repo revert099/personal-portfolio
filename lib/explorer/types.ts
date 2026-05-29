@@ -6,5 +6,6 @@ export type ExplorerItem = {
   date?: string;       // YYYY-MM-DD
   type?: string;       // "ai" | "automation" | "cyber" | etc
   tags?: string[];     // stack/categories
+  category?: "professional" | "personal";
   confidential?: boolean;
 };

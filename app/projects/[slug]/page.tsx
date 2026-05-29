@@ -57,7 +57,7 @@ export default async function ProjectDetailPage(props: PageProps) {
           {frontmatter.title}
         </h1>
 
-        <p className="mt-3 text-muted">{frontmatter.summary}</p>
+        <p className="mt-3 text-muted">{frontmatter.description}</p>
 
         {(github || demo) ? (
           <div className="mt-4 flex flex-wrap gap-2">

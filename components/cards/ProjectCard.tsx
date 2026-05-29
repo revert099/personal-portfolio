@@ -21,8 +21,8 @@ export default function ProjectCard({
   }
 
   return (
-    <Link href={item.href} className="block w-full sm:w-[22rem]">
-      <CardShell className="h-full">
+    <Link href={item.href} className="block w-full sm:w-[22rem] group">
+      <CardShell className="h-full transition-all duration-300 hover:-translate-y-1 hover:border-accent/40 hover:shadow-md group-hover:border-accent/40 group-hover:shadow-md">
         <div className="flex items-center justify-between gap-4">
           <span className="rounded-full border border-border px-3 py-1 text-xs text-muted">
             {item.type ? typeLabel(item.type) : "Project"}

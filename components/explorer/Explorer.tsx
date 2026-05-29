@@ -15,6 +15,7 @@ function toTime(dateStr?: string): number {
 type Props = {
   heading: string;
   description?: string;
+  headerExtra?: ReactNode;
 
   items: ExplorerItem[];
   typeLabel?: (type: string) => string;
@@ -28,6 +29,7 @@ type Props = {
 export default function Explorer({
   heading,
   description,
+  headerExtra,
   items,
   typeLabel,
   renderResults,
@@ -181,6 +183,8 @@ export default function Explorer({
           ) : null}
         </div>
       </div>
+
+      {headerExtra ? <div className="mt-6">{headerExtra}</div> : null}
 
       <p className="mt-6 text-sm text-muted">
         Showing {filtered.length} item{filtered.length === 1 ? "" : "s"}

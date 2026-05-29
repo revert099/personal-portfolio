@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useState } from "react";
+import Reveal from "@/components/Reveal";
 
 type SocialLink = {
   label: string;
@@ -84,7 +85,7 @@ export default function Contact() {
     <section id="contact" className="section">
       <div className="container-page">
         <div className="flex flex-col gap-10 lg:flex-row lg:items-start lg:justify-between">
-          <div className="lg:w-[38%]">
+          <Reveal as="div" mode="view" durationMs={380} className="lg:w-[38%]">
             <h2 className="text-3xl font-semibold tracking-tight">Contact</h2>
             <p className="mt-3 max-w-sm text-muted">
               Connect with me here, or send a message using the form.
@@ -120,9 +121,9 @@ export default function Contact() {
                 </a>
               ))}
             </div>
-          </div>
+          </Reveal>
 
-          <div className="lg:w-[58%]">
+          <Reveal as="div" mode="view" delayMs={80} durationMs={380} className="lg:w-[58%]">
             <div className="card p-6">
               <h3 className="text-xl font-semibold">Send me a message</h3>
 
@@ -197,7 +198,7 @@ export default function Contact() {
                 </div>
               </form>
             </div>
-          </div>
+          </Reveal>
         </div>
       </div>
     </section>

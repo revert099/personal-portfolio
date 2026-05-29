@@ -30,6 +30,9 @@ export default function Navbar() {
 
   const pathname = usePathname();
 
+  // Landing pages manage their own header — suppress the site nav
+  if (pathname.startsWith("/automation")) return null;
+
   return (
     <header className="fixed inset-x-0 top-0 z-[9999] border-b border-border bg-background/95 backdrop-blur">
       <nav className="container-page">
